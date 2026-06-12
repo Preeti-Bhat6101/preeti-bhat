@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 
+// Routes
+const projectRoutes = require("./routes/projects");
+app.use("/api/projects", projectRoutes);
+
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
