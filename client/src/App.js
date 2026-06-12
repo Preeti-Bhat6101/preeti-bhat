@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Chronicles from "./pages/Chronicles";
 import ChronicleDetail from "./pages/ChronicleDetail";
 import PostDetail from "./pages/PostDetail";
+import AdminLogin from "./pages/AdminLogin";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/chronicles/:id" element={<ChronicleDetail />} />
         <Route path="/posts/:id" element={<PostDetail />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
       </Routes>
     </Router>
   );
