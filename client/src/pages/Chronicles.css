@@ -1,0 +1,78 @@
+.chronicles-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+.chronicles-hero {
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.chronicles-hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.chronicles-hero p {
+  color: var(--accent);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.chronicles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 3rem 2rem;
+}
+
+.chronicle-card {
+  background: white;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-dark);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--primary);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.chronicle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.chronicle-card-content {
+  padding: 1.5rem;
+}
+
+.chronicle-card-content h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-dark);
+}
+
+.chronicle-card-content p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.chronicle-posts {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.empty {
+  color: #666;
+  font-size: 1rem;
+  grid-column: 1 / -1;
+}
