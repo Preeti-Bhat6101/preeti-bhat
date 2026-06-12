@@ -12,7 +12,12 @@ app.use(express.json());
 
 // Routes
 const projectRoutes = require("./routes/projects");
+const chronicleRoutes = require("./routes/chronicles");
+const postRoutes = require("./routes/posts");
+
 app.use("/api/projects", projectRoutes);
+app.use("/api/chronicles", chronicleRoutes);
+app.use("/api/posts", postRoutes);
 
 // MongoDB connection
 mongoose
