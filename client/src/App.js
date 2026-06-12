@@ -8,6 +8,7 @@ import Chronicles from "./pages/Chronicles";
 import ChronicleDetail from "./pages/ChronicleDetail";
 import PostDetail from "./pages/PostDetail";
 import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/chronicles/:id" element={<ChronicleDetail />} />
         <Route path="/posts/:id" element={<PostDetail />} />
         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
