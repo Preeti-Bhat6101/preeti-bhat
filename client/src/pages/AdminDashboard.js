@@ -20,6 +20,8 @@ function AdminDashboard() {
   const [modalType, setModalType] = useState("");
   const [formData, setFormData] = useState({});
   const [editingId, setEditingId] = useState(null);
+  const [selectedChronicle, setSelectedChronicle] = useState("");
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
 
@@ -44,12 +46,39 @@ function AdminDashboard() {
     setChronicles(data);
   };
 
+  const fetchPosts = async (chronicleId) => {
+    const res = await fetch(`/api/chronicles/${chronicleId}`);
+    const data = await res.json();
+    setPosts(data.posts);
+  };
+
+  const togglePublish = async (post) => {
+    await fetch(`/api/posts/${post._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ published: !post.published }),
+    });
+    fetchPosts(selectedChronicle);
+  };
+
   const openAddModal = (type) => {
     setModalType(type);
     setEditingId(null);
     if (type === "project") setFormData(emptyProject);
     if (type === "chronicle")
       setFormData({ title: "", description: "", totalPosts: 0 });
+    if (type === "post")
+      setFormData({
+        title: "",
+        content: "",
+        chapterNumber: "",
+        readingTime: "",
+        published: false,
+        chronicle: selectedChronicle,
+      });
     setShowModal(true);
   };
 
@@ -59,30 +88,49 @@ function AdminDashboard() {
     if (type === "project")
       setFormData({ ...item, technologies: item.technologies.join(", ") });
     if (type === "chronicle") setFormData(item);
+    if (type === "post") setFormData(item);
     setShowModal(true);
   };
 
   const handleDelete = async (type, id) => {
     if (!window.confirm("Are you sure you want to delete this?")) return;
-    await fetch(`/api/${type}s/${id}`, {
+    const endpoint =
+      type === "project"
+        ? "projects"
+        : type === "chronicle"
+          ? "chronicles"
+          : "posts";
+    await fetch(`/api/${endpoint}/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-    type === "project" ? fetchProjects() : fetchChronicles();
+    if (type === "project") fetchProjects();
+    else if (type === "chronicle") fetchChronicles();
+    else if (type === "post") fetchPosts(selectedChronicle);
   };
 
   const handleSubmit = async () => {
     const isProject = modalType === "project";
-    const url = editingId
-      ? `/api/${isProject ? "projects" : "chronicles"}/${editingId}`
-      : `/api/${isProject ? "projects" : "chronicles"}`;
+    const isChronicle = modalType === "chronicle";
+    const isPost = modalType === "post";
+
+    let url, body;
+
+    if (isProject) {
+      url = editingId ? `/api/projects/${editingId}` : "/api/projects";
+      body = {
+        ...formData,
+        technologies: formData.technologies.split(",").map((t) => t.trim()),
+      };
+    } else if (isChronicle) {
+      url = editingId ? `/api/chronicles/${editingId}` : "/api/chronicles";
+      body = formData;
+    } else if (isPost) {
+      url = editingId ? `/api/posts/${editingId}` : "/api/posts";
+      body = formData;
+    }
+
     const method = editingId ? "PUT" : "POST";
-    const body = isProject
-      ? {
-          ...formData,
-          technologies: formData.technologies.split(",").map((t) => t.trim()),
-        }
-      : formData;
 
     await fetch(url, {
       method,
@@ -94,7 +142,9 @@ function AdminDashboard() {
     });
 
     setShowModal(false);
-    isProject ? fetchProjects() : fetchChronicles();
+    if (isProject) fetchProjects();
+    else if (isChronicle) fetchChronicles();
+    else if (isPost) fetchPosts(selectedChronicle);
   };
 
   const handleLogout = () => {
@@ -206,10 +256,59 @@ function AdminDashboard() {
           <div>
             <div className="admin-header">
               <h1>Posts</h1>
+              {selectedChronicle && (
+                <button
+                  className="add-btn"
+                  onClick={() => openAddModal("post")}
+                >
+                  + Add Post
+                </button>
+              )}
             </div>
-            <p className="coming-soon">
-              Select a chronicle to manage its posts.
-            </p>
+            <select
+              className="chronicle-select"
+              value={selectedChronicle}
+              onChange={(e) => {
+                setSelectedChronicle(e.target.value);
+                fetchPosts(e.target.value);
+              }}
+            >
+              <option value="">-- Select a Chronicle --</option>
+              {chronicles.map((c) => (
+                <option key={c._id} value={c._id}>
+                  {c.title}
+                </option>
+              ))}
+            </select>
+            <div className="admin-list" style={{ marginTop: "1.5rem" }}>
+              {posts.map((post) => (
+                <div key={post._id} className="admin-item">
+                  <span>
+                    Ch.{post.chapterNumber} — {post.title}
+                  </span>
+                  <div className="admin-item-actions">
+                    <button
+                      className={post.published ? "delete-btn" : "edit-btn"}
+                      onClick={() => togglePublish(post)}
+                    >
+                      {post.published ? "Unpublish" : "Publish"}
+                    </button>
+                    <button
+                      className="edit-btn"
+                      onClick={() => openEditModal("post", post)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete("post", post._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -282,6 +381,53 @@ function AdminDashboard() {
                   setFormData({ ...formData, totalPosts: e.target.value })
                 }
               />
+            </>
+          )}
+
+          {modalType === "post" && (
+            <>
+              <input
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+              <textarea
+                placeholder="Content"
+                value={formData.content}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
+              />
+              <input
+                placeholder="Chapter Number"
+                type="number"
+                value={formData.chapterNumber}
+                onChange={(e) =>
+                  setFormData({ ...formData, chapterNumber: e.target.value })
+                }
+              />
+              <input
+                placeholder="Reading Time (minutes)"
+                type="number"
+                value={formData.readingTime}
+                onChange={(e) =>
+                  setFormData({ ...formData, readingTime: e.target.value })
+                }
+              />
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={formData.published}
+                  onChange={(e) =>
+                    setFormData({ ...formData, published: e.target.checked })
+                  }
+                />
+                Publish immediately
+              </label>
             </>
           )}
           <button className="modal-submit-btn" onClick={handleSubmit}>
