@@ -4,6 +4,7 @@ import "./Chronicles.css";
 
 function Chronicles() {
   const [chronicles, setChronicles] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,6 +20,12 @@ function Chronicles() {
       });
   }, []);
 
+  const filtered = chronicles.filter(
+    (c) =>
+      c.title.toLowerCase().includes(search.toLowerCase()) ||
+      c.description.toLowerCase().includes(search.toLowerCase()),
+  );
+
   if (loading) return <p className="loading">Loading...</p>;
 
   return (
@@ -26,13 +33,20 @@ function Chronicles() {
       <section className="chronicles-hero">
         <h1>Chronicles</h1>
         <p>Not just outcomes — the full journey, documented.</p>
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search chronicles..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </section>
 
       <div className="chronicles-grid">
-        {chronicles.length === 0 ? (
-          <p className="empty">No chronicles yet. Check back soon.</p>
+        {filtered.length === 0 ? (
+          <p className="empty">No chronicles found.</p>
         ) : (
-          chronicles.map((chronicle) => (
+          filtered.map((chronicle) => (
             <Link
               to={`/chronicles/${chronicle._id}`}
               key={chronicle._id}

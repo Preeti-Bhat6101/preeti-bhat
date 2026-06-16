@@ -6,6 +6,7 @@ function ChronicleDetail() {
   const { id } = useParams();
   const [chronicle, setChronicle] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,6 +23,10 @@ function ChronicleDetail() {
       });
   }, [id]);
 
+  const filtered = posts.filter((p) =>
+    p.title.toLowerCase().includes(search.toLowerCase()),
+  );
+
   if (loading) return <p className="loading">Loading...</p>;
   if (!chronicle) return <p className="loading">Chronicle not found.</p>;
 
@@ -36,13 +41,22 @@ function ChronicleDetail() {
         <span className="progress">
           {posts.length} / {chronicle.totalPosts} Posts Published
         </span>
+        {posts.length > 0 && (
+          <input
+            className="search-input"
+            type="text"
+            placeholder="Search posts..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        )}
       </section>
 
       <div className="posts-list">
-        {posts.length === 0 ? (
-          <p className="empty">No posts published yet in this chronicle.</p>
+        {filtered.length === 0 ? (
+          <p className="empty">No posts found.</p>
         ) : (
-          posts.map((post) => (
+          filtered.map((post) => (
             <Link
               to={`/posts/${post._id}`}
               key={post._id}

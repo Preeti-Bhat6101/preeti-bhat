@@ -76,3 +76,26 @@
   font-size: 1rem;
   grid-column: 1 / -1;
 }
+
+.search-input {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 0.85rem 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  font-size: 0.95rem;
+  font-family: var(--font-main);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input::placeholder {
+  color: #a0b4ba;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+}
