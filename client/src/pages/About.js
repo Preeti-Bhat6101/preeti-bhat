@@ -1,5 +1,6 @@
 import React from "react";
 import "./About.css";
+import Timeline from "../components/Timeline";
 import {
   FaPython,
   FaJs,
@@ -108,30 +109,8 @@ function About() {
         </div>
 
         <div className="about-timeline">
-          <h2>Timeline</h2>
-          <div className="timeline">
-            <div className="timeline-item">
-              <span className="timeline-year">2024</span>
-              <div className="timeline-content">
-                <h3>Smart India Hackathon Winner</h3>
-                <p>Won SIH 2024 with Focus Guardian project.</p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <span className="timeline-year">2023</span>
-              <div className="timeline-content">
-                <h3>Vahani Scholar</h3>
-                <p>Selected as a Vahani scholarship recipient.</p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <span className="timeline-year">2023</span>
-              <div className="timeline-content">
-                <h3>AI Bootcamp Lead</h3>
-                <p>Led an AI bootcamp for students.</p>
-              </div>
-            </div>
-          </div>
+          <h2>My Journey</h2>
+          <Timeline />
         </div>
       </section>
     </div>
