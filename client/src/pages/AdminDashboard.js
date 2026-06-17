@@ -28,6 +28,7 @@ function AdminDashboard() {
   const [selectedChronicle, setSelectedChronicle] = useState("");
   const [posts, setPosts] = useState([]);
   const [paintings, setPaintings] = useState([]);
+  const [achievements, setAchievements] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
 
@@ -39,6 +40,7 @@ function AdminDashboard() {
     fetchProjects();
     fetchChronicles();
     fetchPaintings();
+    fetchAchievements();
   }, []);
 
   const fetchProjects = async () => {
@@ -63,6 +65,12 @@ function AdminDashboard() {
     const res = await fetch("/api/paintings");
     const data = await res.json();
     setPaintings(data);
+  };
+
+  const fetchAchievements = async () => {
+    const res = await fetch("/api/achievements");
+    const data = await res.json();
+    setAchievements(data);
   };
 
   const togglePublish = async (post) => {
@@ -101,6 +109,14 @@ function AdminDashboard() {
         medium: "",
         year: "",
       });
+    if (type === "achievement")
+      setFormData({
+        title: "",
+        category: "Achievements",
+        description: "",
+        date: "",
+        certificateUrl: "",
+      });
     setShowModal(true);
   };
 
@@ -112,6 +128,7 @@ function AdminDashboard() {
     if (type === "chronicle") setFormData(item);
     if (type === "post") setFormData(item);
     if (type === "painting") setFormData(item);
+    if (type === "achievement") setFormData(item);
     setShowModal(true);
   };
 
@@ -124,11 +141,14 @@ function AdminDashboard() {
           ? "chronicles"
           : type === "post"
             ? "posts"
-            : "paintings";
+            : type === "painting"
+              ? "paintings"
+              : "achievements";
     if (type === "project") fetchProjects();
     else if (type === "chronicle") fetchChronicles();
     else if (type === "post") fetchPosts(selectedChronicle);
     else if (type === "painting") fetchPaintings();
+    else if (type === "achievement") fetchAchievements();
   };
 
   const handleSubmit = async () => {
@@ -136,6 +156,7 @@ function AdminDashboard() {
     const isChronicle = modalType === "chronicle";
     const isPost = modalType === "post";
     const isPainting = modalType === "painting";
+    const isAchievement = modalType === "achievement";
 
     let url, body;
 
@@ -153,6 +174,9 @@ function AdminDashboard() {
       body = formData;
     } else if (isPainting) {
       url = editingId ? `/api/paintings/${editingId}` : "/api/paintings";
+      body = formData;
+    } else if (isAchievement) {
+      url = editingId ? `/api/achievements/${editingId}` : "/api/achievements";
       body = formData;
     }
 
@@ -172,6 +196,7 @@ function AdminDashboard() {
     else if (isChronicle) fetchChronicles();
     else if (isPost) fetchPosts(selectedChronicle);
     else if (isPainting) fetchPaintings();
+    else if (isAchievement) fetchAchievements();
   };
 
   const handleLogout = () => {
@@ -207,6 +232,12 @@ function AdminDashboard() {
             onClick={() => setActiveTab("paintings")}
           >
             Gallery
+          </li>
+          <li
+            className={activeTab === "achievements" ? "active" : ""}
+            onClick={() => setActiveTab("achievements")}
+          >
+            Achievements
           </li>
         </ul>
         <button className="logout-btn" onClick={handleLogout}>
@@ -387,6 +418,44 @@ function AdminDashboard() {
                     <button
                       className="delete-btn"
                       onClick={() => handleDelete("painting", painting._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {activeTab === "achievements" && (
+          <div>
+            <div className="admin-header">
+              <h1>Achievements</h1>
+              <button
+                className="add-btn"
+                onClick={() => openAddModal("achievement")}
+              >
+                + Add Achievement
+              </button>
+            </div>
+            <div className="admin-list">
+              {achievements.map((achievement) => (
+                <div key={achievement._id} className="admin-item">
+                  <span>
+                    {achievement.category} — {achievement.title}
+                  </span>
+                  <div className="admin-item-actions">
+                    <button
+                      className="edit-btn"
+                      onClick={() => openEditModal("achievement", achievement)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDelete("achievement", achievement._id)
+                      }
                     >
                       Delete
                     </button>
@@ -596,6 +665,50 @@ function AdminDashboard() {
                 value={formData.year}
                 onChange={(e) =>
                   setFormData({ ...formData, year: e.target.value })
+                }
+              />
+            </>
+          )}
+          {modalType === "achievement" && (
+            <>
+              <select
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+              >
+                <option value="Achievements">Achievements</option>
+                <option value="Leadership & Impact">Leadership & Impact</option>
+                <option value="Learning & Certifications">
+                  Learning & Certifications
+                </option>
+              </select>
+              <input
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+              <textarea
+                placeholder="Description"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
+              <input
+                placeholder="Date (e.g. Dec 2024)"
+                value={formData.date}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
+              />
+              <input
+                placeholder="Certificate Image URL (optional, from Cloudinary)"
+                value={formData.certificateUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, certificateUrl: e.target.value })
                 }
               />
             </>
