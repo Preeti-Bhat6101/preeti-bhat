@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Contact from "./pages/Contact";
 import Resume from "./pages/Resume";
 import Gallery from "./pages/Gallery";
+import Achievements from "./pages/Achievements";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/resume" element={<Resume />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/achievements" element={<Achievements />} />
       </Routes>
     </Router>
   );
