@@ -20,12 +20,14 @@ const chronicleRoutes = require("./routes/chronicles");
 const postRoutes = require("./routes/posts");
 const authRoutes = require("./routes/auth");
 const contactRoutes = require("./routes/contact");
+const paintingRoutes = require("./routes/paintings");
 
 app.use("/api/projects", projectRoutes);
 app.use("/api/chronicles", chronicleRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/paintings", paintingRoutes);
 
 // MongoDB connection
 mongoose

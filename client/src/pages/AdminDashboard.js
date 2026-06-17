@@ -5,7 +5,12 @@ import "./AdminDashboard.css";
 
 const emptyProject = {
   title: "",
-  description: "",
+  shortDescription: "",
+  fullDescription: "",
+  whatIBuilt: "",
+  results: "",
+  myRole: "",
+  status: "Completed",
   technologies: "",
   githubLink: "",
   demoLink: "",
@@ -22,6 +27,7 @@ function AdminDashboard() {
   const [editingId, setEditingId] = useState(null);
   const [selectedChronicle, setSelectedChronicle] = useState("");
   const [posts, setPosts] = useState([]);
+  const [paintings, setPaintings] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("adminToken");
 
@@ -32,6 +38,7 @@ function AdminDashboard() {
     }
     fetchProjects();
     fetchChronicles();
+    fetchPaintings();
   }, []);
 
   const fetchProjects = async () => {
@@ -50,6 +57,12 @@ function AdminDashboard() {
     const res = await fetch(`/api/chronicles/${chronicleId}`);
     const data = await res.json();
     setPosts(data.posts);
+  };
+
+  const fetchPaintings = async () => {
+    const res = await fetch("/api/paintings");
+    const data = await res.json();
+    setPaintings(data);
   };
 
   const togglePublish = async (post) => {
@@ -79,6 +92,15 @@ function AdminDashboard() {
         published: false,
         chronicle: selectedChronicle,
       });
+    if (type === "painting")
+      setFormData({
+        title: "",
+        imageUrl: "",
+        shortDescription: "",
+        fullDescription: "",
+        medium: "",
+        year: "",
+      });
     setShowModal(true);
   };
 
@@ -89,6 +111,7 @@ function AdminDashboard() {
       setFormData({ ...item, technologies: item.technologies.join(", ") });
     if (type === "chronicle") setFormData(item);
     if (type === "post") setFormData(item);
+    if (type === "painting") setFormData(item);
     setShowModal(true);
   };
 
@@ -99,20 +122,20 @@ function AdminDashboard() {
         ? "projects"
         : type === "chronicle"
           ? "chronicles"
-          : "posts";
-    await fetch(`/api/${endpoint}/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+          : type === "post"
+            ? "posts"
+            : "paintings";
     if (type === "project") fetchProjects();
     else if (type === "chronicle") fetchChronicles();
     else if (type === "post") fetchPosts(selectedChronicle);
+    else if (type === "painting") fetchPaintings();
   };
 
   const handleSubmit = async () => {
     const isProject = modalType === "project";
     const isChronicle = modalType === "chronicle";
     const isPost = modalType === "post";
+    const isPainting = modalType === "painting";
 
     let url, body;
 
@@ -127,6 +150,9 @@ function AdminDashboard() {
       body = formData;
     } else if (isPost) {
       url = editingId ? `/api/posts/${editingId}` : "/api/posts";
+      body = formData;
+    } else if (isPainting) {
+      url = editingId ? `/api/paintings/${editingId}` : "/api/paintings";
       body = formData;
     }
 
@@ -145,6 +171,7 @@ function AdminDashboard() {
     if (isProject) fetchProjects();
     else if (isChronicle) fetchChronicles();
     else if (isPost) fetchPosts(selectedChronicle);
+    else if (isPainting) fetchPaintings();
   };
 
   const handleLogout = () => {
@@ -174,6 +201,12 @@ function AdminDashboard() {
             onClick={() => setActiveTab("posts")}
           >
             Posts
+          </li>
+          <li
+            className={activeTab === "paintings" ? "active" : ""}
+            onClick={() => setActiveTab("paintings")}
+          >
+            Gallery
           </li>
         </ul>
         <button className="logout-btn" onClick={handleLogout}>
@@ -311,6 +344,58 @@ function AdminDashboard() {
             </div>
           </div>
         )}
+        {activeTab === "paintings" && (
+          <div>
+            <div className="admin-header">
+              <h1>Gallery</h1>
+              <button
+                className="add-btn"
+                onClick={() => openAddModal("painting")}
+              >
+                + Add Painting
+              </button>
+            </div>
+            <div className="admin-list">
+              {paintings.map((painting) => (
+                <div key={painting._id} className="admin-item">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                    }}
+                  >
+                    <img
+                      src={painting.imageUrl}
+                      alt={painting.title}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                        borderRadius: "6px",
+                      }}
+                    />
+                    <span>{painting.title}</span>
+                  </div>
+                  <div className="admin-item-actions">
+                    <button
+                      className="edit-btn"
+                      onClick={() => openEditModal("painting", painting)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete("painting", painting._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {showModal && (
@@ -328,12 +413,51 @@ function AdminDashboard() {
                 }
               />
               <textarea
-                placeholder="Description"
-                value={formData.description}
+                placeholder="Short Description (shown on collapsed card)"
+                value={formData.shortDescription}
                 onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
+                  setFormData({ ...formData, shortDescription: e.target.value })
                 }
               />
+              <textarea
+                placeholder="Full Project Overview (what problem it solves, why it exists)"
+                value={formData.fullDescription}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullDescription: e.target.value })
+                }
+              />
+              <textarea
+                placeholder="What I Built (your specific contributions and technical details)"
+                value={formData.whatIBuilt}
+                onChange={(e) =>
+                  setFormData({ ...formData, whatIBuilt: e.target.value })
+                }
+              />
+              <input
+                placeholder="Results / Impact (e.g. 96% accuracy, 500 users)"
+                value={formData.results}
+                onChange={(e) =>
+                  setFormData({ ...formData, results: e.target.value })
+                }
+              />
+              <input
+                placeholder="My Role (e.g. Solo, Frontend Lead, ML Engineer)"
+                value={formData.myRole}
+                onChange={(e) =>
+                  setFormData({ ...formData, myRole: e.target.value })
+                }
+              />
+              <select
+                value={formData.status}
+                onChange={(e) =>
+                  setFormData({ ...formData, status: e.target.value })
+                }
+              >
+                <option value="Completed">Completed</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Not Deployed">Not Deployed</option>
+                <option value="Archived">Archived</option>
+              </select>
               <input
                 placeholder="Technologies (comma separated)"
                 value={formData.technologies}
@@ -428,6 +552,52 @@ function AdminDashboard() {
                 />
                 Publish immediately
               </label>
+            </>
+          )}
+          {modalType === "painting" && (
+            <>
+              <input
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+              <input
+                placeholder="Image URL (from Cloudinary)"
+                value={formData.imageUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, imageUrl: e.target.value })
+                }
+              />
+              <input
+                placeholder="Short Description (one liner)"
+                value={formData.shortDescription}
+                onChange={(e) =>
+                  setFormData({ ...formData, shortDescription: e.target.value })
+                }
+              />
+              <textarea
+                placeholder="Full Description (optional, for paintings with more to say)"
+                value={formData.fullDescription}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullDescription: e.target.value })
+                }
+              />
+              <input
+                placeholder="Medium (e.g. Watercolour, Acrylic, Digital)"
+                value={formData.medium}
+                onChange={(e) =>
+                  setFormData({ ...formData, medium: e.target.value })
+                }
+              />
+              <input
+                placeholder="Year"
+                value={formData.year}
+                onChange={(e) =>
+                  setFormData({ ...formData, year: e.target.value })
+                }
+              />
             </>
           )}
           <button className="modal-submit-btn" onClick={handleSubmit}>

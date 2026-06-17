@@ -1,7 +1,8 @@
 import React from "react";
 import "./Resume.css";
 
-const FILE_ID = "1xPY_o7C11vzwsDCVUKgltBxrlhUTsZox";
+const FILE_ID = "1NnlD-hpGOHNhHT2hYXGVVFjoe-g709Vw";
+// https://drive.google.com/file/d/1NnlD-hpGOHNhHT2hYXGVVFjoe-g709Vw/view?usp=sharing
 const EMBED_URL = `https://drive.google.com/file/d/${FILE_ID}/preview`;
 const DOWNLOAD_URL = `https://drive.google.com/uc?export=download&id=${FILE_ID}`;
 

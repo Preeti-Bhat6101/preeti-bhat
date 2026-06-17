@@ -30,10 +30,10 @@ function Home() {
       <section className="highlights">
         <h2>Highlights</h2>
         <div className="highlights-grid">
-          <div className="highlight-card">🏆 Smart India Hackathon Winner</div>
-          <div className="highlight-card">🤖 AI Bootcamp Lead</div>
-          <div className="highlight-card">🎯 Focus Guardian Project</div>
-          <div className="highlight-card">🌟 Vahani Scholar</div>
+          <div className="highlight-card">Smart India Hackathon Winner</div>
+          <div className="highlight-card">AI Bootcamp Lead</div>
+          <div className="highlight-card">Vahani Scholar</div>
+          <div className="highlight-card">Navodayan</div>
         </div>
       </section>
     </div>

@@ -6,9 +6,30 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: {
+    shortDescription: {
       type: String,
       required: true,
+    },
+    fullDescription: {
+      type: String,
+      default: "",
+    },
+    whatIBuilt: {
+      type: String,
+      default: "",
+    },
+    results: {
+      type: String,
+      default: "",
+    },
+    myRole: {
+      type: String,
+      default: "",
+    },
+    status: {
+      type: String,
+      enum: ["Completed", "In Progress", "Not Deployed", "Archived"],
+      default: "Completed",
     },
     technologies: [String],
     githubLink: String,
