@@ -1,5 +1,37 @@
 import React from "react";
 import "./About.css";
+import {
+  FaPython,
+  FaJs,
+  FaJava,
+  FaNodeJs,
+  FaReact,
+  FaHtml5,
+  FaGitAlt,
+  FaGithub,
+} from "react-icons/fa";
+import {
+  SiC,
+  SiCplusplus,
+  SiPytorch,
+  SiTensorflow,
+  SiHuggingface,
+  SiOpencv,
+  SiExpress,
+  SiTailwindcss,
+  SiMongodb,
+  SiPostman,
+} from "react-icons/si";
+import { TbApi } from "react-icons/tb";
+
+function SkillCard({ icon, label }) {
+  return (
+    <div className="skill-card">
+      <div className="skill-icon">{icon}</div>
+      <span className="skill-label">{label}</span>
+    </div>
+  );
+}
 
 function About() {
   return (
@@ -21,22 +53,57 @@ function About() {
         </div>
 
         <div className="about-skills">
-          <h2>Skills</h2>
-          <div className="skills-grid">
-            {[
-              "Python",
-              "JavaScript",
-              "React",
-              "Node.js",
-              "MongoDB",
-              "Machine Learning",
-              "CSS",
-              "Git",
-            ].map((skill, i) => (
-              <span key={i} className="skill-tag">
-                {skill}
-              </span>
-            ))}
+          <h2>Technical Skills</h2>
+
+          <div className="skill-category">
+            <h3>Programming Languages</h3>
+            <div className="skills-grid">
+              <SkillCard icon={<FaPython />} label="Python" />
+              <SkillCard icon={<FaJs />} label="JavaScript" />
+              <SkillCard icon={<FaJava />} label="Java" />
+              <SkillCard icon={<SiC />} label="C" />
+              <SkillCard icon={<SiCplusplus />} label="C++" />
+            </div>
+          </div>
+
+          <div className="skill-category">
+            <h3>AI / Machine Learning</h3>
+            <div className="skills-grid">
+              <SkillCard icon={<FaPython />} label="Python" />
+              <SkillCard icon={<SiPytorch />} label="PyTorch" />
+              <SkillCard icon={<SiTensorflow />} label="TensorFlow" />
+              <SkillCard icon={<SiHuggingface />} label="Transformers" />
+              <SkillCard icon={<SiOpencv />} label="MediaPipe" />
+            </div>
+          </div>
+
+          <div className="skill-category">
+            <h3>Backend Development</h3>
+            <div className="skills-grid">
+              <SkillCard icon={<FaNodeJs />} label="Node.js" />
+              <SkillCard icon={<SiExpress />} label="Express.js" />
+              <SkillCard icon={<TbApi />} label="REST APIs" />
+            </div>
+          </div>
+
+          <div className="skill-category">
+            <h3>Frontend & Desktop</h3>
+            <div className="skills-grid">
+              <SkillCard icon={<FaJs />} label="JavaScript" />
+              <SkillCard icon={<FaReact />} label="React" />
+              <SkillCard icon={<FaHtml5 />} label="HTML5" />
+              <SkillCard icon={<SiTailwindcss />} label="Tailwind CSS" />
+            </div>
+          </div>
+
+          <div className="skill-category">
+            <h3>Databases & Tools</h3>
+            <div className="skills-grid">
+              <SkillCard icon={<SiMongodb />} label="MongoDB" />
+              <SkillCard icon={<FaGitAlt />} label="Git" />
+              <SkillCard icon={<FaGithub />} label="GitHub" />
+              <SkillCard icon={<SiPostman />} label="Postman" />
+            </div>
           </div>
         </div>
 
