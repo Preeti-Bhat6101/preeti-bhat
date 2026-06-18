@@ -20,7 +20,7 @@ function Home() {
             <Link to="/projects" className="btn-primary">
               View Projects
             </Link>
-            <Link to="/series" className="btn-secondary">
+            <Link to="/chronicles" className="btn-secondary">
               Read My Journey
             </Link>
           </div>

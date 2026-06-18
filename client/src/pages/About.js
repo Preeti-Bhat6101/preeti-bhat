@@ -108,6 +108,42 @@ function About() {
           </div>
         </div>
 
+        <div className="about-education">
+          <h2>Education</h2>
+          <div className="education-list">
+            <div className="education-item">
+              <div className="education-main">
+                <h3>B.Tech, Computer Science and Engineering</h3>
+                <span className="education-score">CGPA: 9.46</span>
+              </div>
+              <p className="education-institute">
+                University of Visvesvaraya College of Engineering, Bengaluru
+              </p>
+              <span className="education-year">2023 — 2027 (Expected)</span>
+            </div>
+            <div className="education-item">
+              <div className="education-main">
+                <h3>Class XII, CBSE</h3>
+                <span className="education-score">92.2%</span>
+              </div>
+              <p className="education-institute">
+                Jawahar Navodaya Vidyalaya, Uttara Kannada
+              </p>
+              <span className="education-year">2023</span>
+            </div>
+            <div className="education-item">
+              <div className="education-main">
+                <h3>Class X, CBSE</h3>
+                <span className="education-score">99.4%</span>
+              </div>
+              <p className="education-institute">
+                Jawahar Navodaya Vidyalaya, Uttara Kannada
+              </p>
+              <span className="education-year">2021</span>
+            </div>
+          </div>
+        </div>
+
         <div className="about-timeline">
           <h2>My Journey</h2>
           <Timeline />
