@@ -10,7 +10,7 @@ function Home() {
           <p className="hero-greeting">Hi, I'm</p>
           <h1 className="hero-name">Preeti Bhat</h1>
           <p className="hero-tagline">
-            Computer Science Student · SIH Winner · AI Builder · Artist
+            Computer Science Student · SIH Winner · Artist
           </p>
           <p className="hero-description">
             A portfolio, journal, and knowledge archive documenting my growth as
