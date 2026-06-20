@@ -99,3 +99,18 @@
 .search-input:focus {
   border-color: var(--accent);
 }
+
+@media (max-width: 768px) {
+  .chronicles-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .chronicles-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .chronicles-grid {
+    padding: 2rem 1.25rem;
+    grid-template-columns: 1fr;
+  }
+}

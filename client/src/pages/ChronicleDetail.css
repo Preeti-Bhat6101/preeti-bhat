@@ -130,3 +130,22 @@
 .search-input:focus {
   border-color: var(--accent);
 }
+
+@media (max-width: 768px) {
+  .chronicle-detail-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .chronicle-detail-hero h1 {
+    font-size: 2rem;
+  }
+
+  .posts-list {
+    padding: 1.25rem;
+  }
+
+  .post-item {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+}
