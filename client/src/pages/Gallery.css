@@ -213,3 +213,18 @@
 .lightbox-close:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+@media (max-width: 768px) {
+  .gallery-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .gallery-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .gallery-grid {
+    padding: 2rem 1.25rem;
+    grid-template-columns: 1fr;
+  }
+}

@@ -151,3 +151,22 @@
 .lightbox-close:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+@media (max-width: 768px) {
+  .achievements-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .achievements-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .achievements-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .achievement-card-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
