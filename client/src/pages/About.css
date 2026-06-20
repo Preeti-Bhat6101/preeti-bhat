@@ -191,3 +191,48 @@
   color: var(--accent);
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .about-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .about-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .skill-card {
+    padding: 1rem 0.5rem;
+  }
+
+  .skill-icon {
+    font-size: 1.5rem;
+  }
+
+  .skill-label {
+    font-size: 0.7rem;
+  }
+
+  .education-main {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timeline-item {
+    width: 220px;
+  }
+
+  .timeline-content {
+    width: 160px;
+    padding: 1rem;
+  }
+}
