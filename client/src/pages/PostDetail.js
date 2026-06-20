@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./PostDetail.css";
+import { API_URL } from "../config";
 
 function PostDetail() {
   const { id } = useParams();
@@ -8,7 +9,7 @@ function PostDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/posts/${id}`)
+    fetch(`${API_URL}/api/posts/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);

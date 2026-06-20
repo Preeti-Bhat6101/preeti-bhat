@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Contact.css";
+import { API_URL } from "../config";
 
 const reasons = [
   "Collaboration",
@@ -25,7 +26,7 @@ function Contact() {
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

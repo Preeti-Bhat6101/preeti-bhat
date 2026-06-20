@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Achievements.css";
+import { API_URL } from "../config";
 
 const categories = [
   "Achievements",
@@ -13,7 +14,7 @@ function Achievements() {
   const [certificateImage, setCertificateImage] = useState(null);
 
   useEffect(() => {
-    fetch("/api/achievements")
+    fetch(`${API_URL}/api/achievements`)
       .then((res) => res.json())
       .then((data) => {
         setAchievements(data);

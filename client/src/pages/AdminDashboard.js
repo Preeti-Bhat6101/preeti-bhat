@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import "./AdminDashboard.css";
+import { API_URL } from "../config";
 
 const emptyProject = {
   title: "",
@@ -44,37 +45,37 @@ function AdminDashboard() {
   }, []);
 
   const fetchProjects = async () => {
-    const res = await fetch("/api/projects");
+    const res = await fetch(`${API_URL}/api/projects`);
     const data = await res.json();
     setProjects(data);
   };
 
   const fetchChronicles = async () => {
-    const res = await fetch("/api/chronicles");
+    const res = await fetch(`${API_URL}/api/chronicles`);
     const data = await res.json();
     setChronicles(data);
   };
 
   const fetchPosts = async (chronicleId) => {
-    const res = await fetch(`/api/chronicles/${chronicleId}`);
+    const res = await fetch(`${API_URL}/api/chronicles/${chronicleId}`);
     const data = await res.json();
     setPosts(data.posts);
   };
 
   const fetchPaintings = async () => {
-    const res = await fetch("/api/paintings");
+    const res = await fetch(`${API_URL}/api/paintings`);
     const data = await res.json();
     setPaintings(data);
   };
 
   const fetchAchievements = async () => {
-    const res = await fetch("/api/achievements");
+    const res = await fetch(`${API_URL}/api/achievements`);
     const data = await res.json();
     setAchievements(data);
   };
 
   const togglePublish = async (post) => {
-    await fetch(`/api/posts/${post._id}`, {
+    await fetch(`${API_URL}/api/posts/${post._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -144,6 +145,10 @@ function AdminDashboard() {
             : type === "painting"
               ? "paintings"
               : "achievements";
+    await fetch(`${API_URL}/api/${endpoint}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (type === "project") fetchProjects();
     else if (type === "chronicle") fetchChronicles();
     else if (type === "post") fetchPosts(selectedChronicle);
@@ -161,22 +166,32 @@ function AdminDashboard() {
     let url, body;
 
     if (isProject) {
-      url = editingId ? `/api/projects/${editingId}` : "/api/projects";
+      url = editingId
+        ? `${API_URL}/api/projects/${editingId}`
+        : `${API_URL}/api/projects`;
       body = {
         ...formData,
         technologies: formData.technologies.split(",").map((t) => t.trim()),
       };
     } else if (isChronicle) {
-      url = editingId ? `/api/chronicles/${editingId}` : "/api/chronicles";
+      url = editingId
+        ? `${API_URL}/api/chronicles/${editingId}`
+        : `${API_URL}/api/chronicles`;
       body = formData;
     } else if (isPost) {
-      url = editingId ? `/api/posts/${editingId}` : "/api/posts";
+      url = editingId
+        ? `${API_URL}/api/posts/${editingId}`
+        : `${API_URL}/api/posts`;
       body = formData;
     } else if (isPainting) {
-      url = editingId ? `/api/paintings/${editingId}` : "/api/paintings";
+      url = editingId
+        ? `${API_URL}/api/paintings/${editingId}`
+        : `${API_URL}/api/paintings`;
       body = formData;
     } else if (isAchievement) {
-      url = editingId ? `/api/achievements/${editingId}` : "/api/achievements";
+      url = editingId
+        ? `${API_URL}/api/achievements/${editingId}`
+        : `${API_URL}/api/achievements`;
       body = formData;
     }
 

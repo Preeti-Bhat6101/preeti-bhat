@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./ChronicleDetail.css";
+import { API_URL } from "../config";
 
 function ChronicleDetail() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function ChronicleDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/chronicles/${id}`)
+    fetch(`${API_URL}/api/chronicles/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setChronicle(data.chronicle);

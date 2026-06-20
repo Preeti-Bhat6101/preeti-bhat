@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Projects.css";
+import { API_URL } from "../config";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -7,7 +8,7 @@ function Projects() {
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
-    fetch("/api/projects")
+    fetch(`${API_URL}/api/projects`)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data);

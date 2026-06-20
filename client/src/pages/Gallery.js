@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Gallery.css";
+import { API_URL } from "../config";
 
 function Gallery() {
   const [paintings, setPaintings] = useState([]);
@@ -8,7 +9,7 @@ function Gallery() {
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
   useEffect(() => {
-    fetch("/api/paintings")
+    fetch(`${API_URL}/api/paintings`)
       .then((res) => res.json())
       .then((data) => {
         setPaintings(data);
